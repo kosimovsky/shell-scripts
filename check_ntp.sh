@@ -28,7 +28,8 @@ get_ip () {
 }
 
 get_os_version () {		# function for checking OS version
-	VERSION=$(hostnamectl | grep -i "os name" | echo $(tr -d [:alpha:][:punct:][:space:]))
+
+	VERSION=$(hostnamectl | grep -i 'operating system' | awk -F: '{print $2}')
 	echo -e ${GREEN}$VERSION${NC}
 }
 
