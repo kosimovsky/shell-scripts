@@ -56,65 +56,6 @@ get_ntp_daemon () {
 	fi
 }
 	
-#	if [ $(get_os_version) > 7 ]; then	
-#		which chronyd &> /dev/null
-#		if [ $? == 0 ]; then
-#			DAEMON=$CHRONYD
-#		else
-#			echo "${RED}NTP daemon is not installed!${NC}"
-#		return 2
-#		fi
-#	elif [ $(get_os_version) == 7 ]; then
-#		which chronyd &> /dev/null
-#		if [ $? == 0 ]; then
-#			DAEMON=$CHRONYD
-#		fi
-#		which ntpd &> /dev/null
-#		if [ $? == 0 ]; then
-#			DAEMON=$NTPD
-#		fi
-#	elif [ $(get_os_version) < 7 ]; then
-#		which ntpd &> /dev/null
-#		if [ $? == 0 ]; then
-#			DAEMON=$NTPD
-#		fi
-#	else
-#		echo -e "${RED}NTP daemon is not installed!${NC}"
-#		return 2
-#	fi	
-
-#which_ntp_daemon () {
-#	if [ $(get_os_version) > 7 ]; then	
-#		which chronyd &> /dev/null
-#		if [ $? == 0 ]; then
-#			echo -e "NTP daemon is ${GREEN}chronyd!${NC}"
-#		else
-#			echo -e "${RED}NTP daemon is not installed!${NC}"
-#		return 
-#		fi
-#	elif [ $(get_os_version) == 7 ]; then
-#		which chronyd &> /dev/null
-#		if [ $? == 0 ]; then
-#			echo -e "NTP daemon is ${GREEN}chronyd!${NC}"
-#		fi
-#		which ntpd &> /dev/null
-#		if [ $? == 0 ]; then
-#			echo -e "NTP daemon is ${GREEN}ntpd!${NC}"
-#		fi
-#	elif [ $(get_os_version) < 7 ]; then
-#		which ntpd &> /dev/null
-#		if [ $? == 0 ]; then
-#			echo -e "NTP daemon is ${GREEN}ntpd!${NC}"
-#		fi
-#	else
-#		echo -e "${RED}NTP daemon is not installed!${NC}"
-#		return 2
-#	fi	
-#}
-
-check_service () {
-	systemctl status $DAEMON | awk '/Active:/{if ($3 =="(running)") print 0; else if ( $3 =="(dead)") print 1; else print 2;}'
-}
 
 case $1 in
 	help)		usage;;
