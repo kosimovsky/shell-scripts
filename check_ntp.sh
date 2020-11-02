@@ -5,6 +5,7 @@ GREEN='\033[0;32m'
 NC='\033[0m'
 CHRONYD="chronyd"
 NTPD="ntpd"
+TIMESYNCD="systemd-timesyncd"
 DAEMON=""
 
 usage () {
@@ -34,20 +35,26 @@ get_os_version () {		# function for checking OS version
 }
 
 check_service () {
-	get_ntp_daemon
 	systemctl status $DAEMON | awk '/Active:/{if ($3 =="(running)") print 0; else if ( $3 =="(dead)") print 1; else print 2;}'
 }
 
 get_ntp_daemon () {
-	which chronyd &> /dev/null
-	if [ $? == 0 ]; then
+	if (( $(which chronyd &>/dev/null ; echo $?) == 0 )); then
 		DAEMON=$CHRONYD
-		if [ $(check_service) == 0 ]; then
-			echo -e "${GREEN}$DAEMON is running.${NC}"
-		else
-			echo -e "${RED}$DAEMON is inactive.${NC}"
+	elif (( $(which ntpd &>/dev/null ; echo $?) == 0 )); then
+		DAEMON=$NTPD
+		if [ -e '/lib/systemd/systemd-timesyncd' ]; then
+			DAEMON=$TIMESYNCD
 		fi
+	elif [ -e '/lib/systemd/systemd-timesyncd' ]; then
+		DAEMON=$TIMESYNCD
 	fi
+	if [[ $(check_service) == 0 ]]; then
+		echo -e "${GREEN}$DAEMON is running.${NC}"
+	else
+		echo -e "${RED}$DAEMON is installed but inactive.${NC}"
+	fi
+}
 	
 #	if [ $(get_os_version) > 7 ]; then	
 #		which chronyd &> /dev/null
@@ -75,7 +82,6 @@ get_ntp_daemon () {
 #		echo -e "${RED}NTP daemon is not installed!${NC}"
 #		return 2
 #	fi	
-}
 
 #which_ntp_daemon () {
 #	if [ $(get_os_version) > 7 ]; then	
