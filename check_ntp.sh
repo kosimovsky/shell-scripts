@@ -27,13 +27,13 @@ get_ip () {
 	echo -e ${GREEN}$IP${NC}
 }
 
-get_centos_version () {		# function for checking CentOS version
+get_os_version () {		# function for checking OS version
 	VERSION=$(hostnamectl | grep -i "os name" | echo $(tr -d [:alpha:][:punct:][:space:]))
 	echo -e ${GREEN}$VERSION${NC}
 }
 
 get_ntp_daemon () {
-	if [ $(get_centos_version) > 7 ]; then	
+	if [ $(get_os_version) > 7 ]; then	
 		which chronyd &> /dev/null
 		if [ $? == 0 ]; then
 			DAEMON=$CHRONYD
@@ -41,7 +41,7 @@ get_ntp_daemon () {
 			echo "${RED}NTP daemon is not installed!${NC}"
 		return 2
 		fi
-	elif [ $(get_centos_version) == 7 ]; then
+	elif [ $(get_os_version) == 7 ]; then
 		which chronyd &> /dev/null
 		if [ $? == 0 ]; then
 			DAEMON=$CHRONYD
@@ -50,7 +50,7 @@ get_ntp_daemon () {
 		if [ $? == 0 ]; then
 			DAEMON=$NTPD
 		fi
-	elif [ $(get_centos_version) < 7 ]; then
+	elif [ $(get_os_version) < 7 ]; then
 		which ntpd &> /dev/null
 		if [ $? == 0 ]; then
 			DAEMON=$NTPD
@@ -62,7 +62,7 @@ get_ntp_daemon () {
 }
 
 which_ntp_daemon () {
-	if [ $(get_centos_version) > 7 ]; then	
+	if [ $(get_os_version) > 7 ]; then	
 		which chronyd &> /dev/null
 		if [ $? == 0 ]; then
 			echo -e "NTP daemon is ${GREEN}chronyd!${NC}"
@@ -70,7 +70,7 @@ which_ntp_daemon () {
 			echo -e "${RED}NTP daemon is not installed!${NC}"
 		return 
 		fi
-	elif [ $(get_centos_version) == 7 ]; then
+	elif [ $(get_os_version) == 7 ]; then
 		which chronyd &> /dev/null
 		if [ $? == 0 ]; then
 			echo -e "NTP daemon is ${GREEN}chronyd!${NC}"
@@ -79,7 +79,7 @@ which_ntp_daemon () {
 		if [ $? == 0 ]; then
 			echo -e "NTP daemon is ${GREEN}ntpd!${NC}"
 		fi
-	elif [ $(get_centos_version) < 7 ]; then
+	elif [ $(get_os_version) < 7 ]; then
 		which ntpd &> /dev/null
 		if [ $? == 0 ]; then
 			echo -e "NTP daemon is ${GREEN}ntpd!${NC}"
@@ -99,7 +99,7 @@ case $1 in
 	help)		usage;;
 	ip)			get_ip;;
 	check)		check_service;;
-	os)			get_centos_version;;
+	os)			get_os_version;;
 	ntp)		which_ntp_daemon;;
 	-c)			CMD=$(which chronyc)
 				if [[ $(check_service) -eq 0 ]]; then
