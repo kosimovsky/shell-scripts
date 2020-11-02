@@ -45,7 +45,7 @@ get_ntp_daemon () {
 		if [ $(check_service) == 0 ]; then
 			echo -e "${GREEN}$DAEMON is running.${NC}"
 		else
-			echo -e "${GREEN}$DAEMON is inactive.${NC}"
+			echo -e "${RED}$DAEMON is inactive.${NC}"
 		fi
 	fi
 	
