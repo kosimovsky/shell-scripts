@@ -2,6 +2,7 @@
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 CHRONYD="chronyd"
 NTPD="ntpd"
@@ -14,6 +15,7 @@ echo -e \\n"================================================ USAGE: ============
 \t2: ${GREEN}./check_ntp os${NC}\t\tto get OS version.\n\
 \t3: ${GREEN}./check_ntp ntp${NC}\t\tto know what NTP daemon is set.\n\
 \t4: ${GREEN}./check_ntp check${NC}\t\tto check NTP daemon is running (0) or not (1).\n\
+\t\t${BLUE}If NTP daemon is ${RED}chrony${BLUE} use ./check_ntp -c ....${NC}\n\
 \t5: ${GREEN}./check_ntp -c delay${NC}\t\tto check ${RED}Root delay${NC} parameter.\n\
 \t6: ${GREEN}./check_ntp -c strat${NC}\t\tto check ${RED}Stratum${NC} parameter.\n\
 \t7: ${GREEN}./check_ntp -c systime${NC}\tto check ${RED}System time${NC} parameter.\n\
