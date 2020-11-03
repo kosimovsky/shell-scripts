@@ -29,7 +29,6 @@ get_ip () {
 }
 
 get_os_version () {		# function for checking OS version
-
 	VERSION=$(hostnamectl | grep -i 'operating system' | awk -F: '{print $2}')
 	echo -e ${GREEN}$VERSION${NC}
 }
@@ -60,10 +59,12 @@ get_ntp_daemon () {
 case $1 in
 	help)		usage;;
 	ip)			get_ip;;
-	check)		check_service;;
+	check)		get_ntp_daemon &>/dev/null
+			check_service;;
 	os)			get_os_version;;
 	ntp)		get_ntp_daemon;;
 	-c)			CMD=$(which chronyc)
+				get_ntp_daemon &>/dev/null
 				if [[ $(check_service) -eq 0 ]]; then
 					if [ $2 == "strat" ]; then
 						$CMD tracking | grep -i "stratum" | awk -F: '{ print $2 }' | cut -d " " -f2
