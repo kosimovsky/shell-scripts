@@ -7,7 +7,12 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 BLUE='\033[0;34m'
 NC='\033[0m'
-IP=$(which ip)
+
+IP=$(which ip 2>/dev/null)
+if [ $? == 1 ]; then
+	IP='/usr/sbin/ip'
+fi
+
 STATE=""
 
 declare -a interfaces
