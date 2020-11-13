@@ -15,8 +15,8 @@ decode_json(){
 
 USERNAME="root@pam"
 read -p "Enter password: " PASS
-HOST=10.3.28.70:8006
+HOST="https://10.3.28.70:8006"
 
-DATA=`curl -s -k -d "username=$USERNAME&password$PASS" $HOST/api2/json/access/ticket`
-TICKET=$(decode_json $DATA 'ticket')
-CSRF=$(decode_json $DATA 'CSRFPreventionToken')
+DATA=`curl -s -k -d "username=$USERNAME&password=$PASS" $HOST/api2/json/access/ticket`
+TICKET=$(decode_json $DATA "ticket")
+CSRF=$(decode_json $DATA "CSRFPreventionToken")
